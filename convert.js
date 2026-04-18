@@ -48,6 +48,7 @@ const { chromium } = require('playwright');
 const http         = require('http');
 const fs           = require('fs');
 const path         = require('path');
+const { pathToFileURL } = require('url');
 const { execSync, spawnSync } = require('child_process');
 
 // ── Arg parsing (no external deps) ────────────────────────────────────────────
@@ -225,7 +226,7 @@ async function main() {
     pageUrl = `http://localhost:${PORT}/${encodeURI(htmlFile)}${QUERY ? '?' + QUERY : ''}`;
     console.log(`\nServing ${rootDir} at http://localhost:${PORT}`);
   } else {
-    pageUrl = 'file:///' + path.join(rootDir, htmlFile).replace(/\\/g, '/') + (QUERY ? '?' + QUERY : '');
+    pageUrl = pathToFileURL(path.join(rootDir, htmlFile)).href + (QUERY ? '?' + QUERY : '');
     console.log(`\nUsing file:// URL (relative fetch()/ESM may fail without --server)`);
   }
 

@@ -15,38 +15,68 @@ Claude Design lets you download a project as a ZIP. That ZIP has an HTML file al
 2. **Unzip it** anywhere on disk.
 3. **Run one command:**
 
+   **Windows (PowerShell / CMD):**
+
    ```
    convert.bat path\to\design.html
+   ```
+
+   **macOS (Terminal):**
+
+   ```
+   bash convert.sh path/to/design.html
    ```
 
 That's it — a 1920×1080 MP4 appears next to `design.html`. The tool auto-starts a local server so relative `.jsx` / module imports resolve, auto-detects the duration if the design exposes `window.__capture`, and falls back to realtime recording otherwise (just add `--duration <seconds>`).
 
 ```
-my-design.zip  →  unzip  →  convert.bat design.html  →  design.mp4
+my-design.zip  →  unzip  →  convert(.bat|.sh) design.html  →  design.mp4
 ```
 
 For **frame-perfect, stutter-free** output, ask the model to add a capture handle — a one-liner documented under [Frame-perfect output](#frame-perfect-output).
 
 ## Setup
 
+**Windows (PowerShell / CMD):**
+
 ```
 setup.bat
+```
+
+**macOS (Terminal):**
+
+```
+bash setup.sh
 ```
 
 Requires [Node.js](https://nodejs.org) 18+ and [ffmpeg](https://ffmpeg.org/download.html) on PATH. Installs Playwright + Chromium (~120 MB).
 
 ## Usage
 
+**Windows (PowerShell / CMD):**
+
 ```
 convert.bat <path\to\design.html> [options]
+```
+
+**macOS (Terminal):**
+
+```
+bash convert.sh <path/to/design.html> [options]
 ```
 
 Output is written next to the input (`design.html` → `design.mp4`).
 
 ```
+# Windows
 convert.bat design.html --duration 32
 convert.bat design.html --fps 60 --width 1280 --height 720
 convert.bat folder\with\index.html --out clip.mp4
+
+# macOS
+bash convert.sh design.html --duration 32
+bash convert.sh design.html --fps 60 --width 1280 --height 720
+bash convert.sh folder/with/index.html --out clip.mp4
 ```
 
 ### Options
@@ -77,11 +107,11 @@ Realtime recording can stutter on heavy scenes. For smooth, deterministic video,
 
 > Expose a `window.__capture = { duration, fps, width, height, setTime(t), setPlaying(b) }` handle that drives the animation's current time, so the page can be captured frame-by-frame by a headless renderer.
 
-Then rerun `convert.bat design.html`. The tool auto-detects the handle and switches to deterministic mode. Use `--mode det` if you want it to fail loudly when the handle is missing.
+Then rerun `convert.bat design.html` (Windows) or `bash convert.sh design.html` (macOS). The tool auto-detects the handle and switches to deterministic mode. Use `--mode det` if you want it to fail loudly when the handle is missing.
 
 ## Troubleshooting
 
-- **"ffmpeg not found"** — install from https://ffmpeg.org/download.html, add `bin\` to PATH, restart terminal.
+- **"ffmpeg not found"** — Windows: install from https://ffmpeg.org/download.html, add `bin\` to PATH, restart terminal. macOS: `brew install ffmpeg`.
 - **"Duration unknown"** — pass `--duration <sec>` or expose `window.__capture.duration`.
 - **Blank frames / missing fonts** — bump `--wait 2`.
 - **Slow capture** — lower `--fps`, use `--preset medium`, or reduce `--width`/`--height`.
