@@ -170,7 +170,14 @@ function checkFfmpeg() {
 // ── Main ──────────────────────────────────────────────────────────────────────
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.flags.help || args._.length === 0) { printHelp(); process.exit(args._.length ? 0 : 1); }
+  if (args.flags.help) {
+    printHelp();
+    process.exit(0);
+  }
+  if (args._.length === 0) {
+    printHelp();
+    process.exit(1);
+  }
 
   const inputArg = args._[0];
   const inputPath = path.resolve(inputArg);
