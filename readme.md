@@ -1,6 +1,6 @@
 # claude-design-html-to-mp4
 
-Convert Claude Design HTML (and any HTML page) into an MP4.
+Convert [Claude Design](https://claude.ai/design) HTML (and any HTML page) into an MP4.
 
 - **Deterministic mode** — if the page exposes `window.__capture`, the tool steps frame-by-frame. Frame-perfect regardless of machine speed.
 - **Realtime mode** — fallback for any HTML. Records the page in real time via Playwright, transcodes to MP4. Not frame-perfect under load.
